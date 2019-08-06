@@ -4,21 +4,22 @@ WSEX – CryptoCurrency eXchange ws Trading Library
 
 pip 安装
 ~~~~~~
-    - 安装应用
-    
-        python setup.py install
-    
-        该命令会将当前的Python应用安装到当前Python环境的”site-packages”目录下，这样其他程序就可以像导入标准库一样导入该应用的代码了。
+- 安装应用
 
-    - 开发方式安装
-    
-        python setup.py develop
-    
-        如果应用在开发过程中会频繁变更，每次安装还需要先将原来的版本卸掉，很麻烦。使用”develop”开发方式安装的话，应用代码不会真的被拷贝到本地Python环境的”site-packages”目录下，而是在”site-packages”目录里创建一个指向当前应用位置的链接。这样如果当前位置的源码被改动，就会马上反映到”site-packages”里。
+.. code:: shell
+
+    python setup.py install # 该命令会将当前的Python应用安装到当前Python环境的”site-packages”目录下，这样其他程序就可以像导入标准库一样导入该应用的代码了。
+
+- 开发方式安装
+
+.. code:: shell
+
+    python setup.py develop # 如果应用在开发过程中会频繁变更，每次安装还需要先将原来的版本卸掉，很麻烦。使用”develop”开发方式安装的话，应用代码不会真的被拷贝到本地Python环境的”site-packages”目录下，而是在”site-packages”目录里创建一个指向当前应用位置的链接。这样如果当前位置的源码被改动，就会马上反映到”site-packages”里。
 
 
 Docker
 ~~~~~~
+
 .. code:: shell
 
     ./docker.sh drun
@@ -34,12 +35,14 @@ Docker
     - async def parse_trade(self, msg, ws)
     - async def parse_kline(self, msg, ws)
 
-在test_exchange 中导入新接入的交易所
+在test_exchange 中导入新接入的交易所:
+
 .. code:: shell
 
     from wsex import biki as Exchange
 
 执行测试命令:
+
 .. code:: shell
 
     python manage.py test wsex.test.test_exchange -k
@@ -48,26 +51,26 @@ Docker
 iPython 7.0 中测试
 ~~~~~~
 
-.. code:: python
+.. code:: shell
 
-import wsex
+    import wsex
 
-symbol = 'btcusdt'
+    symbol = 'btcusdt'
 
-ex = wsex.biki()
+    ex = wsex.biki()
 
-# 获取klines
-await ex.get_restful_klines(symbol, '1min')
+    # 获取klines
+    await ex.get_restful_klines(symbol, '1min')
 
-# 获取trades
-await ex.get_restful_trades(symbol)
+    # 获取trades
+    await ex.get_restful_trades(symbol)
 
-ws_url = await ex.get_ws_url()
+    ws_url = await ex.get_ws_url()
 
-# ws 获取kline 数据
-sub_data = await ex.get_kline_sub_data(symbol)
-# ws 获取trade 数据
-sub_data = await ex.get_trade_sub_data(symbol)
+    # ws 获取kline 数据
+    sub_data = await ex.get_kline_sub_data(symbol)
+    # ws 获取trade 数据
+    sub_data = await ex.get_trade_sub_data(symbol)
 
-await ex.add_sub_data(sub_data)
-await ex.get_ws_data_forever(ws_url)
+    await ex.add_sub_data(sub_data)
+    await ex.get_ws_data_forever(ws_url)
