@@ -1,7 +1,9 @@
 
-## 使用说明：
+WSEX – CryptoCurrency eXchange ws Trading Library
+==============================================
 
-- 作为包使用
+pip 安装
+~~~~~~
     - 安装应用
     
         python setup.py install
@@ -15,52 +17,38 @@
         如果应用在开发过程中会频繁变更，每次安装还需要先将原来的版本卸掉，很麻烦。使用”develop”开发方式安装的话，应用代码不会真的被拷贝到本地Python环境的”site-packages”目录下，而是在”site-packages”目录里创建一个指向当前应用位置的链接。这样如果当前位置的源码被改动，就会马上反映到”site-packages”里。
 
 
-- docker构建环境
-    ```
-    ~ ./docker.sh drun
-    ```
-- 在spider 中进行交易所接入
-- 交易所接入参考示例: biki
-- 主要实现方法: 
+Docker
+~~~~~~
+.. code:: shell
+
+    ./docker.sh drun
+
+新交易所接入
+~~~~~~
+在wsex 中进行交易所接入
+交易所接入参考示例: biki
+主要实现方法:
     - def get_symbols(self) # 交易所支持交易对
     - async def parse_restful_trade(self)
     - async def parse_restful_kline(self)
     - async def parse_trade(self, msg, ws)
     - async def parse_kline(self, msg, ws)
-- 在test_exchange 中导入新接入的交易所
-    ```
-    from .biki import biki as Exchange
-    ```
-- 执行测试命令: 
-    ```
-    python manage.py test spider.test.test_exchange -k 
-    ```
-- 主要数据结构
-    - trade
-        ```
-        [
-            
-            1562317469, # 时间: int 秒级时间戳
-            'trade_id', # 订单id: str 
-            'b',        # 交易类型: str 'b' or 's'
-            11000.11,   # 价格: float
-            0.001       # 成交量: float
-        ]
-        ```
-    - kline
-        ```
-        [
-            1573692000, # 时间: int 秒级 分钟时间戳
-            11000.11,   # o开: float 
-            11000.11,   # h高: float 
-            11000.11,   # l低: float 
-            11000.11,   # c关: float 
-            0.11,       # v交易量: float 
-        ]
-        ```
-      
-- iPython 7.0 中测试
-```python
+
+在test_exchange 中导入新接入的交易所
+.. code:: shell
+
+    from wsex import biki as Exchange
+
+执行测试命令:
+.. code:: shell
+
+    python manage.py test wsex.test.test_exchange -k
+
+
+iPython 7.0 中测试
+~~~~~~
+
+.. code:: python
 
 import wsex
 
@@ -83,4 +71,3 @@ sub_data = await ex.get_trade_sub_data(symbol)
 
 await ex.add_sub_data(sub_data)
 await ex.get_ws_data_forever(ws_url)
-```
