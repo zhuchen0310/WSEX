@@ -1,0 +1,11 @@
+version: "3"
+services:
+  wsex:
+    image: wsex
+    restart: always
+    build: .
+    command: ./docker-entrypoint.sh
+    volumes:
+      - .:/opt/wsex
+    container_name: wsex
+    privileged: true

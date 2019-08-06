@@ -1,0 +1,8 @@
+
+[:python_version>="3.6.5"]
+
+[doc]
+Sphinx==1.7.0
+
+[qa]
+flake8==3.5.0

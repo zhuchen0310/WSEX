@@ -1,0 +1,15 @@
+LICENSE.txt
+MANIFEST.in
+README.rst
+package.json
+setup.cfg
+setup.py
+wsex/__init__.py
+wsex/_base.py
+wsex/biki.py
+wsex/settings.py
+wsex.egg-info/PKG-INFO
+wsex.egg-info/SOURCES.txt
+wsex.egg-info/dependency_links.txt
+wsex.egg-info/requires.txt
+wsex.egg-info/top_level.txt
