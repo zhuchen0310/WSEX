@@ -1,5 +1,5 @@
 
-WSEX – CryptoCurrency eXchange ws Trading Library
+WSEX – CryptoCurrency EXchange ws Trading Library
 ==============================================
 
 pip 安装
