@@ -26,8 +26,11 @@ Docker
 
 新交易所接入
 ~~~~~~
+
 在wsex 中进行交易所接入
+
 交易所接入参考示例: biki
+
 主要实现方法:
     - def get_symbols(self) # 交易所支持交易对
     - async def parse_restful_trade(self)
