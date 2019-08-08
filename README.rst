@@ -1,5 +1,5 @@
 
-WSEX – CryptoCurrency eXchange ws Trading Library
+WSEX – CryptoCurrency EXchange ws Trading Library
 ==============================================
 
 pip 安装
@@ -26,10 +26,13 @@ Docker
 
 新交易所接入
 ~~~~~~
+
 在wsex 中进行交易所接入
+
 交易所接入参考示例:
     - biki 发送订阅
     - binance 在连接中订阅
+
 主要实现方法:
     - def get_symbols(self) # 交易所支持交易对
     - async def parse_restful_trade(self)
