@@ -2,11 +2,8 @@
 # -*- coding:utf-8 -*-
 # @zhuchen    : 2019-08-06 10:35
 
-
 import datetime
 from enum import Enum
-
-import requests
 
 from wsex.utils.http_base import WSBase, HttpBase
 from wsex.utils.logger_con import get_logger
@@ -50,23 +47,9 @@ class ExchangeBase(WSBase):
             }
         }
         self.http = HttpBase(loop=loop, proxy=proxy, timeout=timeout)
+        self.is_send_sub_data = True
 
-    def requests_data(self, url, request_method='GET', **kwargs):
-        """
-        功能:
-            requests 获取 json 数据
-        """
-        try:
-            headers = self.http_data['headers']
-            proxies = {'http': self.http_proxy, 'https': self.http_proxy}
-            timeout = self.http_timeout
-            data = requests.request(request_method, url, headers=headers, proxies=proxies, timeout=timeout, **kwargs).json()
-        except Exception as e:
-            print(f'request error: {e}')
-            data = None
-        return data
-
-    async def str_2_timestamp(self, time_str, is_timedelta=True, timedelta_hours=8):
+    async def str_2_timestamp(self, time_str: str, is_timedelta: bool = True, timedelta_hours: int = 8):
         """
         功能:
             时间str > 时间戳 秒级时间戳
@@ -93,21 +76,21 @@ class ExchangeBase(WSBase):
         """
         return {}
 
-    async def get_restful_trade_url(self, symbol):
+    async def get_restful_trade_url(self, symbol: str):
         """
         功能:
             获取 restful 请求的url
         """
         pass
 
-    async def get_restful_kline_url(self, symbol, timeframe, limit):
+    async def get_restful_kline_url(self, symbol: str, timeframe: str = None, limit: int = 0):
         """
         功能:
             获取 restful 请求的url 不需要 再正反序判断
         """
         pass
 
-    async def parse_restful_trade(self, data, symbol, is_save=True):
+    async def parse_restful_trade(self, data: dict, symbol: str):
         """
         功能:
             处理 restful 返回 trade
@@ -117,7 +100,7 @@ class ExchangeBase(WSBase):
         """
         pass
 
-    async def parse_restful_kline(self, data):
+    async def parse_restful_kline(self, data: dict):
         """
         功能:
             处理 restful 返回 kline
@@ -127,7 +110,7 @@ class ExchangeBase(WSBase):
         """
         pass
 
-    async def get_restful_trades(self, symbol, is_save=True, is_first_request=False):
+    async def get_restful_trades(self, symbol: str):
         """
         功能:
             获取 RESTFUL trade
@@ -136,9 +119,9 @@ class ExchangeBase(WSBase):
         """
         url = await self.get_restful_trade_url(symbol)
         data = await self.http.get_json_data(url)
-        return await self.parse_restful_trade(data, symbol, is_save=False)
+        return await self.parse_restful_trade(data, symbol)
 
-    async def get_restful_klines(self, symbol, timeframe, limit=None, is_first_request=False):
+    async def get_restful_klines(self, symbol: str, timeframe: str = None, limit: int = None):
         """
         功能:
             获取 RESTFUL klines
@@ -150,21 +133,21 @@ class ExchangeBase(WSBase):
             ret = ret[::-1]
         return ret
 
-    async def parse_trade(self, msg, ws):
+    async def parse_trade(self, msg: str, ws):
         """
         功能:
             处理 ws 实时trade
         """
         pass
 
-    async def parse_kline(self, msg, ws):
+    async def parse_kline(self, msg: str, ws):
         """
         功能:
             处理 ws 实时kline
         """
         pass
 
-    async def on_message(self, ws, message):
+    async def on_message(self, ws, message: str):
         """
         功能:
             ws 消息处理函数
@@ -239,7 +222,7 @@ class ExchangeBase(WSBase):
             print(trade_list[0])
         pass
 
-    async def save_kline_to_redis(self, symbol: str, kline, ws=None):
+    async def save_kline_to_redis(self, symbol: str, kline: list, ws=None):
         """
         功能:
             保存 klines

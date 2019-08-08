@@ -40,6 +40,7 @@ class biki(ExchangeBase):
         self.symbols = self.get_symbols()
         self.max_sub_num = 50
         self.ping_interval_seconds = 5
+        self.http.headers = self.http_data['headers']
 
     def get_symbols(self):
         """
@@ -51,7 +52,7 @@ class biki(ExchangeBase):
         api = self.http_data['api']
         path = self.http_data['urls']['symbols']
         url = f'{api}{path}'
-        data = self.requests_data(url)
+        data = self.http.requests_data(url)
         if not data or not data.get('data'):
             raise BaseException(f'{self.exchange_id} get symbols error')
         symbols = {
@@ -60,14 +61,14 @@ class biki(ExchangeBase):
         }
         return symbols
 
-    async def get_ws_url(self, ws_type=None):
+    async def get_ws_url(self, ws_type: str = None):
         """
         功能:
             生成 ws 链接
         """
         return self.ws_data['api']['ws_url']
 
-    async def get_trade_sub_data(self, symbol):
+    async def get_trade_sub_data(self, symbol: str):
         """
         功能:
             获取 订阅消息
@@ -81,7 +82,7 @@ class biki(ExchangeBase):
             }
         })
 
-    async def get_kline_sub_data(self, symbol):
+    async def get_kline_sub_data(self, symbol: str):
         """
         功能:
             获取 订阅消息
@@ -94,7 +95,7 @@ class biki(ExchangeBase):
             }
         })
 
-    async def get_restful_trade_url(self, symbol):
+    async def get_restful_trade_url(self, symbol: str):
         """
         功能:
             获取 restful 请求的url
@@ -104,7 +105,7 @@ class biki(ExchangeBase):
         url = f'{api}{path}'
         return url
 
-    async def get_restful_kline_url(self, symbol, timeframe, limit=None):
+    async def get_restful_kline_url(self, symbol: str, timeframe: str = None, limit: int = None):
         """
         功能:
             获取 restful 请求的url
@@ -114,7 +115,7 @@ class biki(ExchangeBase):
         url = f'{api}{path}'
         return url
 
-    async def parse_restful_trade(self, data, symbol, is_save=True):
+    async def parse_restful_trade(self, data: dict, symbol: str):
         """
         功能:
             处理 restful 返回 trade
@@ -140,12 +141,10 @@ class biki(ExchangeBase):
             if not format_trade:
                 continue
             trade_list.append(format_trade)
-        if is_save:
-            await self.save_trades_to_redis(symbol, trade_list)
-        else:
-            return trade_list
+        await self.save_trades_to_redis(symbol, trade_list)
+        return trade_list
 
-    async def parse_trade(self, msg, ws):
+    async def parse_trade(self, msg: str, ws):
         """
         功能:
             处理 ws 实时 trade
@@ -201,7 +200,7 @@ class biki(ExchangeBase):
             trade_list.append(format_trade)
         await self.save_trades_to_redis(symbol, trade_list, ws)
 
-    async def parse_restful_kline(self, data):
+    async def parse_restful_kline(self, data: dict):
         """
         功能:
             处理 restful 返回 kline
@@ -223,7 +222,7 @@ class biki(ExchangeBase):
                 ohlcv_list.append(fmt_k)
         return ohlcv_list
 
-    async def parse_kline(self, msg, ws):
+    async def parse_kline(self, msg: str, ws):
         """
         功能:
             处理 ws 实时 1min kline

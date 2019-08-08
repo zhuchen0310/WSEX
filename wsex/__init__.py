@@ -3,9 +3,11 @@
 # @zhuchen    : 2019-08-06 10:40
 
 from .biki import biki
+from .binance import binance
 
 exchanges = [
     'biki',
+    'binance',
 
 ]
 

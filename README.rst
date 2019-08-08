@@ -27,7 +27,9 @@ Docker
 新交易所接入
 ~~~~~~
 在wsex 中进行交易所接入
-交易所接入参考示例: biki
+交易所接入参考示例:
+    - biki 发送订阅
+    - binance 在连接中订阅
 主要实现方法:
     - def get_symbols(self) # 交易所支持交易对
     - async def parse_restful_trade(self)
@@ -54,23 +56,34 @@ iPython 7.0 中测试
 .. code:: shell
 
     import wsex
-
     symbol = 'btcusdt'
-
     ex = wsex.biki()
-
     # 获取klines
     await ex.get_restful_klines(symbol, '1min')
-
     # 获取trades
     await ex.get_restful_trades(symbol)
 
+    # 普通的一次连接 发送订阅模式 biki:
+    # is_send_sub_data = True
     ws_url = await ex.get_ws_url()
-
     # ws 获取kline 数据
     sub_data = await ex.get_kline_sub_data(symbol)
     # ws 获取trade 数据
     sub_data = await ex.get_trade_sub_data(symbol)
-
     await ex.add_sub_data(sub_data)
     await ex.get_ws_data_forever(ws_url)
+
+    # 在连接中订阅模式 binance:
+    # is_send_sub_data = False
+    ex = wsex.binance()
+    symbols = ['btcusdt']
+    ws_type = 'kline'
+    ws_url = await ex.get_ws_url(ws_type, symbols)
+    await ex.get_ws_data_forever(ws_url)
+
+ToDo
+~~~~~~
+
+- 支持 ticker
+- 支持各周期 kline
+- 同步模式
