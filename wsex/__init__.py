@@ -9,6 +9,7 @@ from .huobipro import huobipro
 exchanges = [
     'biki',
     'binance',
+    'huobipro',
 
 ]
 
