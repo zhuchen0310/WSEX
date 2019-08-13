@@ -4,6 +4,7 @@
 
 from .biki import biki
 from .binance import binance
+from .huobipro import huobipro
 
 exchanges = [
     'biki',
