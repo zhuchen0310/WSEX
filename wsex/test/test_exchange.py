@@ -15,7 +15,7 @@ loop = asyncio.get_event_loop()
 proxy = settings.PROXY
 
 
-class HotbitTests(TestCase):
+class ExchangeTests(TestCase):
     """
     说明:
         1. 在单个交易所中编辑 相应方法
