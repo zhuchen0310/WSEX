@@ -1,4 +1,4 @@
-aiohttp==3.5.4
+aiohttp==3.7.4
 ujson==1.35
 Django==2.2.10
 ipdb==0.11
